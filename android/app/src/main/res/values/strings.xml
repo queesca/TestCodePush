@@ -2,5 +2,4 @@
     <string name="app_name">TestCodePush</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">55dfa9c0-f33b-4942-8b9d-1a5cd66c5827</string>
 </resources>

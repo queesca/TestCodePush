@@ -24,7 +24,6 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import codePush from 'react-native-code-push';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -116,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default codePush(App);
+export default App;
