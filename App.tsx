@@ -16,6 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import codePush from 'react-native-code-push';
 
 import {
   Colors,
@@ -80,7 +81,7 @@ function App(): JSX.Element {
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title="See Your Changes">
+          {/* <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
           <Section title="Debug">
@@ -88,7 +89,7 @@ function App(): JSX.Element {
           </Section>
           <Section title="Learn More">
             Read the docs to discover what to do next:
-          </Section>
+          </Section> */}
           <LearnMoreLinks />
         </View>
       </ScrollView>
@@ -115,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default codePush(App);
