@@ -8,6 +8,7 @@
 import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -55,52 +56,84 @@ function Section({children, title}: SectionProps): JSX.Element {
     </View>
   );
 }
+// const options = {
+//   updateDialog: true,
+//   installMode: codePush.InstallMode.IMMEDIATE,
+//   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+// };
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      logs: [],
+    };
+  }
+  codePushStatusDidChange(status: any) {
+    let msg = '';
+    switch (status) {
+      case codePush.SyncStatus.CHECKING_FOR_UPDATE:
+        msg = 'Checking for updates.';
+        break;
+      case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+        msg = 'Downloading package.';
+        break;
+      case codePush.SyncStatus.INSTALLING_UPDATE:
+        msg = 'Installing update.';
+        break;
+      case codePush.SyncStatus.UP_TO_DATE:
+        msg = 'Up-to-date.';
+        break;
+      case codePush.SyncStatus.UPDATE_INSTALLED:
+        msg = 'Update installed.';
+        break;
+    }
 
-function App(): JSX.Element {
-  useEffect(() => {
-    codePush.sync({
-      installMode: codePush.InstallMode.IMMEDIATE,
-    });
-  }, []);
-  const isDarkMode = useColorScheme() === 'dark';
+    console.log(msg);
+  }
+  codePushDownloadDidProgress(progress: {
+    receivedBytes: string;
+    totalBytes: string;
+  }) {
+    console.log(
+      progress.receivedBytes + ' of ' + progress.totalBytes + ' received.',
+    );
+  }
+  update() {
+    // console.log('update')
+    codePush.sync(
+      {
+        // updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE,
+      },
+      // ,
+      () => this.codePushStatusDidChange,
+      // () => this.codePushDownloadDidProgress,
+    );
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+  render() {
+    return (
+      <>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>Welcome</Text>
+          <Text style={styles.instructions}>Update version 1.0</Text>
+          <Button title="Update" onPress={this.update} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        <Home update={this.update} />
+      </>
+    );
+  }
 }
+
+const Home = props => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Welcome</Text>
+      <Text style={styles.instructions}>Update version 1.0</Text>
+      <Button title="Update" onPress={props.update} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -119,9 +152,11 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  container: {
+    flex: 1,
+  },
+  welcome: {},
+  instructions: {},
 });
 
-export default codePush({
-  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-  installMode: codePush.InstallMode.ON_NEXT_RESUME,
-})(App);
+export default codePush(App);
