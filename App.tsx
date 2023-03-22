@@ -98,6 +98,19 @@ class App extends React.Component {
       progress.receivedBytes + ' of ' + progress.totalBytes + ' received.',
     );
   }
+
+  componentDidMount(): void {
+    codePush.sync(
+      {
+        // updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE,
+      },
+      // ,
+      () => this.codePushStatusDidChange,
+      // () => this.codePushDownloadDidProgress,
+    );
+  }
+
   update() {
     // console.log('update')
     codePush.sync(
@@ -115,8 +128,8 @@ class App extends React.Component {
     return (
       <>
         <View style={styles.container}>
-          <Text style={styles.welcome}>Welcome</Text>
-          <Text style={styles.instructions}>Update version 1.0</Text>
+          <Text style={styles.welcome}>Làm sao để sử dụng code push</Text>
+          <Text style={styles.instructions}>Update version 1.6</Text>
           <Button title="Update" onPress={this.update} />
         </View>
         <Home update={this.update} />
@@ -128,8 +141,9 @@ class App extends React.Component {
 const Home = props => {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome</Text>
-      <Text style={styles.instructions}>Update version 1.0</Text>
+      <Text style={styles.welcome}>Từ bi vô điều kiện</Text>
+      <Text style={styles.welcome}>Osho</Text>
+      <Text style={styles.instructions}>Update version 2.0</Text>
       <Button title="Update" onPress={props.update} />
     </View>
   );
